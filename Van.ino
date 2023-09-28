@@ -37,18 +37,17 @@ void setup() {
 void loop() {
   int leadAcidVoltage = analogRead(leadAcidSense);
   bool alternator = false;
-  // If the alternator is on it will switch all systems to run off the alternator
-  // thus allowing the lithium to charge off solar without any load.
+  //Sense whether the alternator is on
   if(leadAcidVoltage < 842) {
     alternator = false;
   } else if (leadAcidVoltage > 842) {
     alternator = true;
   }
   if(alternator) {
-    //if alternator is on we always want to run off that
+    //if alternator is on we always want to run off lead acid batteries/alternator
     relayBoard.digitalWrite(lithiumVout, HIGH);
   } else {
-    //if alternator is off we want to run off the lead acid until the voltage drops to 12.7V(822)
+    //if alternator is off we run off the lead acid until the voltage < 12.7V (822)
     //in which case we switch to the lithium battery
     if (leadAcidVoltage < 822) {
       relayBoard.digitalWrite(lithiumVout, LOW);
