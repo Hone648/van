@@ -13,6 +13,7 @@ uint8_t relay6 = P2;
 uint8_t relay7 = P1;
 uint8_t relay8 = P0;
 uint32_t delayMS;
+int leadAcidSense = A0;
 
 void setup() {
   Serial.begin(115200);
@@ -34,21 +35,27 @@ void setup() {
 }
 
 void loop() {
-  static int counter = 0;
-  int batteryVoltage = analogRead(A0);
+  int leadAcidVoltage = analogRead(leadAcidSense);
   bool alternator = false;
-  if(batteryVoltage < 842) {
+  // If the alternator is on it will switch all systems to run off the alternator
+  // thus allowing the lithium to charge off solar without any load.
+  if(leadAcidVoltage < 842) {
     alternator = false;
-  } else if (batteryVoltage > 842) {
+  } else if (leadAcidVoltage > 842) {
     alternator = true;
   }
-  Serial.println(alternator);
   if(alternator) {
+    //if alternator is on we always want to run off that
     relayBoard.digitalWrite(lithiumVout, HIGH);
   } else {
-    relayBoard.digitalWrite(lithiumVout, LOW);
+    //if alternator is off we want to run off the lead acid until the voltage drops to 12.7V(822)
+    //in which case we switch to the lithium battery
+    if (leadAcidVoltage < 822) {
+      relayBoard.digitalWrite(lithiumVout, LOW);
+    } else {
+      relayBoard.digitalWrite(lithiumVout, HIGH);
+    }
   }
-  Serial.println(batteryVoltage);
   delay(13000);
 }
 
