@@ -21,6 +21,9 @@ This code is a versatile and adaptive solution that allows you to incorporate bo
 
 5. **User-Friendly Integration:**
    - It's designed to be easily integrated into your existing circuits, Arduino projects, or other microcontroller-based applications. The code is well-documented with clear instructions for setup and configuration.
+  
+6. **Relay Board Integration:**
+   - This code is written to work seamlessly with an 8-channel GPIO relay board, offering additional control over components that may be added in the future. The relay board allows you to switch and control various devices or components as needed, making your projects even more versatile.
 
 ## Getting Started
 
@@ -29,6 +32,7 @@ This code is a versatile and adaptive solution that allows you to incorporate bo
    - AGM battery
    - Lithium battery
    - Appropriate resistors (as per circuit design)
+   - 8-channel GPIO relay board (for enhanced control)
 
 2. **Upload the Code:**
    - Upload the provided code to your microcontroller using your preferred development environment (e.g., Arduino IDE).
